@@ -38,7 +38,7 @@ enum layers {
 #define HM_J    RSFT_T(KC_J)   // J: tap j, hold Right Shift
 #define HM_K    RGUI_T(KC_K)   // K: tap k, hold Right Command
 #define HM_L    RALT_T(KC_L)   // L: tap l, hold Right Option
-#define HM_SCLN RSFT_T(KC_SCLN)// ;: tap ;, hold Right Shift
+#define HM_SCLN RCTL_T(KC_SCLN)// ;: tap ;, hold Right Ctrl
 
 // Transparent helper
 #define _______ KC_TRNS
@@ -121,9 +121,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [SYM] = LAYOUT_tkl_f13_ansi(
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_BSPC,  _______,  _______,  _______,
-        _______,  KC_EXLM,  KC_AT,    KC_DLR,   KC_HASH,  _______,  _______,  KC_AMPR,  KC_ASTR,  KC_UNDS,  KC_BSLS,  KC_PLUS,  _______,  _______,  _______,  _______,  _______,
-        _______,  KC_CIRC,  KC_GRV,   KC_TILD,  KC_PERC,   _______,  KC_LBRC,  KC_LPRN,  KC_RPRN,  KC_MINS,  KC_COLN,  KC_EQL,            _______,
-        _______,            KC_0,     _______,  CMD_C,    CMD_V,    _______,  KC_RBRC,  KC_LCBR,  KC_RCBR,  KC_PIPE,  _______,            _______,            _______,
+        _______,  KC_EXLM,  KC_AT,    KC_DLR,   KC_HASH,  _______,  _______,  KC_AMPR,  KC_ASTR,  KC_UNDS,  KC_PLUS,  KC_BSLS,  _______,  _______,  _______,  _______,  _______,
+        _______,  KC_CIRC,  KC_GRV,   KC_TILD,  KC_PERC,  _______,  KC_LBRC,  KC_LPRN,  KC_RPRN,  KC_MINS,  KC_EQL,   KC_PIPE,            _______,
+        _______,            KC_0,     _______,  CMD_C,    CMD_V,    _______,  KC_RBRC,  KC_LCBR,  KC_RCBR,  _______,  _______,            _______,            _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______,  _______),
 
     // ─────────────────────────────
