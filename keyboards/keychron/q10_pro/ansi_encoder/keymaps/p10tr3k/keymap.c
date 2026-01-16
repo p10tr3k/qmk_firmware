@@ -89,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // MAC_BASE – homerow mods, Space=SYM, Caps(tap Esc / hold NAV), V=NUM
     // ─────────────────────────────
     [MAC_BASE] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+     // 0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
         MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
         MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // MAC_FN – multimedia/system jak stock Q10 Pro
     // ─────────────────────────────
     [MAC_FN] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+     // 0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         RGB_TOG,    _______,    KC_BRID,    KC_BRIU,    KC_MCTL,    KC_LPAD,    RGB_VAD,    RGB_VAI,    I______I    I______I    KC_MPRV,    KC_MPLY,    KC_MNXT,    KC_MUTE,    KC_VOLD,    KC_VOLU,    _______,    _______,
         _______,    _______,    BT_HST1,    BT_HST2,    BT_HST3,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
         _______,    RGB_TOG,    RGB_MOD,    RGB_VAI,    RGB_HUI,    RGB_SAI,    RGB_SPI,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
@@ -113,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // WIN_BASE – jak stock (bez homerow mods)
     // ─────────────────────────────
     [WIN_BASE] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+    //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
         MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
         MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
@@ -122,19 +122,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MC_5,       KC_LCTL,    KC_LWIN,    KC_LALT,    KC_SPC,     I______I    MO(WIN_FN), I______I    KC_SPC,     I______I    I______I    KC_RALT,    KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
 
     [WIN_FN] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
-        RGB_TOG,    _______,    KC_BRID,    KC_BRIU,    KC_TASK,    KC_FILE,    RGB_VAD,     RGB_VAI,   I______I    I______I    KC_MPRV,    KC_MPLY,    KC_MNXT,    KC_MUTE,    KC_VOLD,    KC_VOLU,    _______,    _______,
-        _______,    _______,    BT_HST1,    BT_HST2,    BT_HST3,    _______,    _______,     _______,   I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
-        _______,    RGB_TOG,    RGB_MOD,    RGB_VAI,    RGB_HUI,    RGB_SAI,    RGB_SPI,     I______I   I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
-        _______,    _______,    RGB_RMOD,   RGB_VAD,    RGB_HUD,    RGB_SAD,    RGB_SPD,     I______I   I______I    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,
-        _______,    _______,    _______,    _______,    _______,    _______,    BAT_LVL,     I______I   BAT_LVL,    NK_TOGG,    _______,    _______,    _______,    _______,    I______I    _______,    _______,    I______I
-        _______,    _______,    _______,    _______,    _______,    I______I    _______,     I______I   _______,    I______I    I______I    _______,    _______,    I______I    I______I    _______,    _______,    _______),
+    //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
+        RGB_TOG,    _______,    KC_BRID,    KC_BRIU,    KC_TASK,    KC_FILE,    RGB_VAD,    RGB_VAI,    I______I    I______I    KC_MPRV,    KC_MPLY,    KC_MNXT,    KC_MUTE,    KC_VOLD,    KC_VOLU,    _______,    _______,
+        _______,    _______,    BT_HST1,    BT_HST2,    BT_HST3,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    RGB_TOG,    RGB_MOD,    RGB_VAI,    RGB_HUI,    RGB_SAI,    RGB_SPI,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    _______,    RGB_RMOD,   RGB_VAD,    RGB_HUD,    RGB_SAD,    RGB_SPD,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,
+        _______,    _______,    _______,    _______,    _______,    _______,    BAT_LVL,    I______I    BAT_LVL,    NK_TOGG,    _______,    _______,    _______,    _______,    I______I    _______,    _______,    I______I
+        _______,    _______,    _______,    _______,    _______,    I______I    _______,    I______I    _______,    I______I    I______I    _______,    _______,    I______I    I______I    _______,    _______,    _______),
 
     // ─────────────────────────────
     // SYM – warstwa symboliczna (SpaceFN)
     // ─────────────────────────────
     [SYM] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+    //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
         _______,    _______,    KC_EXLM,    KC_AT,      KC_DLR,     KC_HASH,    _______,    I______I    I______I    _______,    KC_AMPR,    KC_ASTR,    KC_UNDS,    KC_PLUS,    KC_BSLS,    _______,    _______,    _______,
@@ -146,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // NAV – warstwa nawigacyjna (CapsFN)
     // ─────────────────────────────
     [NAV] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+    //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    KC_HOME,    KC_PGDN,    KC_PGUP,    KC_END,     _______,    _______,    _______,    _______,
@@ -158,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // NUM – warstwa numeryczna (V)
     // ─────────────────────────────
     [NUM] = LAYOUT_90_ansi(
-        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+    //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         _______,    _______,    _______,    _______,    _______,    _______,    _______,     XXXXXXX,   I______I    I______I    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,     XXXXXXX,   I______I    I______I    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    XXXXXXX,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,     I______I   I______I    XXXXXXX,    KC_7,       KC_8,       KC_9,       XXXXXXX,    XXXXXXX,    _______,    _______,    _______,
