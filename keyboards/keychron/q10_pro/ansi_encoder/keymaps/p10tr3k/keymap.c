@@ -40,9 +40,17 @@ enum layers {
 #define HM_L    RALT_T(KC_L)    // L: tap l, hold Right Option
 #define HM_SCLN RCTL_T(KC_SCLN) // ;: tap ;, hold Right Ctrl
 
+#define SYM_SPC LT(SYM, KC_SPC)
+#define NAV_ESC LT(NAV, KC_ESC)
+#define NUM_V   LT(NUM, KC_V)
+
+#define HG_G MT(MOD_HYPR, KC_G)
+#define HG_H MT(MOD_HYPR, KC_H)
+
+
 // Transparent helper
 #define _______ KC_TRNS
-
+#define I______I /* one*/
 // Custom keycodes for Cmd+C / Cmd+V
 enum custom_keycodes {
     CMD_C = SAFE_RANGE,
@@ -81,58 +89,64 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // MAC_BASE – homerow mods, Space=SYM, Caps(tap Esc / hold NAV), V=NUM
     // ─────────────────────────────
     [MAC_BASE] = LAYOUT_90_ansi(
-        KC_MUTE,    KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_INS,             KC_DEL,
-        MC_1,       KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,      KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,             KC_PGUP,
-        MC_2,       KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,      KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSPC,            KC_PGDN,
-        MC_3,       LT(NAV, KC_ESC),  HM_A,    HM_S,    HM_D,    HM_F,    KC_G,      KC_H,     HM_J,    HM_K,    HM_L,    HM_SCLN, KC_QUOT,            KC_ENT,             KC_HOME,
-        MC_4,       KC_LSFT,            KC_Z,     KC_X,     KC_C,     LT(NUM, KC_V), KC_B,     KC_B, KC_N, KC_M,  KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,  KC_UP,
-        MC_5,       KC_LCTL,  KC_LOPTN,           KC_LCMMD, LT(SYM, KC_SPC), MO(MAC_FN),       LT(SYM, KC_SPC),          KC_RCMMD, KC_RCTL,            KC_LEFT,  KC_DOWN,  KC_RGHT),
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+        KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
+        MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
+        MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
+        MC_3,       NAV_ESC,    HM_A,       HM_S,       HM_D,       HM_F,       HG_G,       I______I    I______I    HG_H,       HM_J,       HM_K,       HM_L,       HM_SCLN,    KC_QUOT,    I______I    KC_ENT,     KC_HOME,
+        MC_4,       KC_LSFT,    KC_Z,       KC_X,       KC_C,       NUM_V,      KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
+        MC_5,       KC_LCTL,    KC_LOPTN,   KC_LCMMD,   SYM_SPC,    I______I    MO(MAC_FN), I______I    SYM_SPC,    I______I    I______I    KC_RCMMD,   KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
 
     // ─────────────────────────────
     // MAC_FN – multimedia/system jak stock Q10 Pro
     // ─────────────────────────────
     [MAC_FN] = LAYOUT_90_ansi(
-        RGB_TOG,    _______,  KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  RGB_VAD,   RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,            _______,
-        _______,    _______,  BT_HST1,  BT_HST2,  BT_HST3,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,    RGB_TOG,  RGB_MOD,  RGB_VAI,  RGB_HUI,  RGB_SAI,  RGB_SPI,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        _______,    _______,  RGB_RMOD, RGB_VAD,  RGB_HUD,  RGB_SAD,  RGB_SPD,   _______,  _______,  _______,  _______,  _______,  _______,            _______,            _______,
-        _______,    _______,            _______,  _______,  _______,  _______,   BAT_LVL,  BAT_LVL,  NK_TOGG,  _______,  _______,  _______,  _______,  _______,  _______,
-        _______,    _______,  _______,            _______,  _______,  _______,             _______,            _______,            _______,            _______,  _______,  _______),
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+        RGB_TOG,    _______,    KC_BRID,    KC_BRIU,    KC_MCTL,    KC_LPAD,    RGB_VAD,    RGB_VAI,    I______I    I______I    KC_MPRV,    KC_MPLY,    KC_MNXT,    KC_MUTE,    KC_VOLD,    KC_VOLU,    _______,    _______,
+        _______,    _______,    BT_HST1,    BT_HST2,    BT_HST3,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    RGB_TOG,  RGB_MOD,  RGB_VAI,  RGB_HUI,  RGB_SAI,  RGB_SPI,                                    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,
+        _______,    _______,  RGB_RMOD, RGB_VAD,  RGB_HUD,  RGB_SAD,  RGB_SPD,                                    _______,  _______,  _______,  _______,  _______,  _______,  I______I   _______,    _______,
+        _______,    _______,  _______,  _______,  _______,  _______,  BAT_LVL,                        BAT_LVL,    NK_TOGG,  _______,  _______,  _______,  _______,  I______I   _______,  _______,
+        _______,    _______,  _______,  _______,  _______,  _______,                                  _______,                        _______,  _______,  I______I   I______I   _______,  _______,    _______),
 
     // ─────────────────────────────
     // WIN_BASE – jak stock (bez homerow mods)
     // ─────────────────────────────
     [WIN_BASE] = LAYOUT_90_ansi(
-        KC_MUTE,    KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_INS,             KC_DEL,
-        MC_1,       KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,      KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSLS,            KC_PGUP,
-        MC_2,       KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,      KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSPC,            KC_PGDN,
-        MC_3,       KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_ENT,             KC_HOME,
-        MC_4,       KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,      KC_B,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  KC_RSFT,  KC_UP,
-        MC_5,       KC_LCTL,  KC_LWIN,            KC_LALT,  KC_SPC,  MO(WIN_FN),           KC_SPC,             KC_RALT,            KC_RCTL,            KC_LEFT,  KC_DOWN,  KC_RGHT),
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
+        KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
+        MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
+        MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
+        MC_3,       KC_CAPS,    KC_A,       KC_S,       KC_D,       KC_F,       HG_G,       I______I    I______I    HG_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_QUOT,    I______I    KC_ENT,     KC_HOME,
+        MC_4,       KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
+        MC_5,       KC_LCTL,    KC_LWIN,    KC_LALT,    KC_SPC,     I______I    MO(WIN_FN), I______I    KC_SPC,     I______I    I______I    KC_RALT,    KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
 
     [WIN_FN] = LAYOUT_90_ansi(
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
         RGB_TOG,    _______,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,   RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,            _______,
         _______,    _______,  BT_HST1,  BT_HST2,  BT_HST3,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,    RGB_TOG,  RGB_MOD,  RGB_VAI,  RGB_HUI,  RGB_SAI,  RGB_SPI,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,    _______,  RGB_RMOD, RGB_VAD,  RGB_HUD,  RGB_SAD,  RGB_SPD,   _______,  _______,  _______,  _______,  _______,  _______,            _______,            _______,
-        _______,    _______,            _______,  _______,  _______,  _______,   BAT_LVL,  BAT_LVL,  NK_TOGG,  _______,  _______,  _______,  _______,  _______,  _______,
+        _______,    _______,  _______,  _______,  _______,  _______,   BAT_LVL,  BAT_LVL,  NK_TOGG,  _______,  _______,  _______,  _______,  _______,  _______,
         _______,    _______,  _______,            _______,  _______,  _______,             _______,            _______,            _______,            _______,  _______,  _______),
 
     // ─────────────────────────────
     // SYM – warstwa symboliczna (SpaceFN)
     // ─────────────────────────────
     [SYM] = LAYOUT_90_ansi(
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,    _______,  KC_EXLM,  KC_AT,    KC_DLR,   KC_HASH,  _______,   _______,  KC_AMPR,  KC_ASTR,  KC_UNDS,  KC_PLUS,  KC_BSLS,  _______,  _______,            _______,
         _______,    _______,  KC_CIRC,  KC_GRV,   KC_TILD,  KC_PERC,  _______,   KC_LBRC,  KC_LPRN,  KC_RPRN,  KC_MINS,  KC_EQL,   KC_PIPE,            _______,            _______,
-        _______,    _______,            KC_0,     _______,  CMD_C,    CMD_V,     _______,  _______,  KC_RBRC,  KC_LCBR,  KC_RCBR,  _______,  _______,  _______,  _______,
+        _______,    _______,  KC_0,     _______,  CMD_C,    CMD_V,     _______,  _______,  KC_RBRC,  KC_LCBR,  KC_RCBR,  _______,  _______,  _______,  _______,
         _______,    _______,  _______,            _______,  _______,  _______,             _______,            _______,            _______,            _______,  _______,  _______),
 
     // ─────────────────────────────
     // NAV – warstwa nawigacyjna (CapsFN)
     // ─────────────────────────────
     [NAV] = LAYOUT_90_ansi(
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   _______,  KC_HOME,  KC_PGDN,  KC_PGUP,  KC_END,   _______,  _______,  _______,            _______,
@@ -144,11 +158,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // NUM – warstwa numeryczna (V)
     // ─────────────────────────────
     [NUM] = LAYOUT_90_ansi(
+        I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I    I______I
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  _______,  _______,            _______,
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  _______,  _______,            _______,
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   XXXXXXX,  KC_7,     KC_8,     KC_9,     XXXXXXX,  XXXXXXX,  _______,  _______,            _______,
         _______,    _______,  _______,  _______,  _______,  _______,  _______,   XXXXXXX,   KC_4,     KC_5,     KC_6,     XXXXXXX,  XXXXXXX,           _______,
-        _______,    _______,            _______,  _______,  _______,  _______,   _______,  _______,  XXXXXXX,  XXXXXXX,  KC_1,     KC_2,     KC_3,     KC_DOT,  XXXXXXX,  _______,
+        _______,    _______,  _______,  _______,  _______,  _______,   _______,  _______,  XXXXXXX,  XXXXXXX,  KC_1,     KC_2,     KC_3,     KC_DOT,  XXXXXXX,  _______,
         _______,    _______,  _______,            _______,  _______,  _______,             KC_0,               XXXXXXX,            XXXXXXX,            _______,  _______,  _______),
     };
 
