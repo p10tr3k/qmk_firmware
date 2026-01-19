@@ -1,0 +1,145 @@
+/* Copyright 2023 @ Keychron (https://www.keychron.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include QMK_KEYBOARD_H
+
+// Layers
+enum layers {
+    MAC_BASE,
+    WIN_BASE,
+    MAC_FN,
+    WIN_FN,
+    L_FN1,
+    SYM,
+    NAV,
+    NUM,
+};
+
+// Home Row Mods (macOS)
+// Left hand
+#define HM_A    LCTL_T(KC_A)    // A: tap a, hold Left Ctrl
+#define HM_S    LALT_T(KC_S)    // S: tap s, hold Left Option
+#define HM_D    LGUI_T(KC_D)    // D: tap d, hold Left Command
+#define HM_F    LSFT_T(KC_F)    // F: tap f, hold Left Shift
+
+// Right hand
+#define HM_J    RSFT_T(KC_J)    // J: tap j, hold Right Shift
+#define HM_K    RGUI_T(KC_K)    // K: tap k, hold Right Command
+#define HM_L    RALT_T(KC_L)    // L: tap l, hold Right Option
+#define HM_SCLN RCTL_T(KC_SCLN) // ;: tap ;, hold Right Ctrl
+
+#define SYM_SPC LT(SYM, KC_SPC)
+#define NAV_ESC LT(NAV, KC_ESC)
+#define NUM_V   LT(NUM, KC_V)
+
+#define HG_G MT(MOD_HYPR, KC_G)
+#define HG_H MT(MOD_HYPR, KC_H)
+
+// Transparent helper
+#define _______ KC_TRNS
+#define I______I /* one*/
+// Custom keycodes for Cmd+C / Cmd+V
+enum custom_keycodes {
+    CMD_C = SAFE_RANGE,
+    CMD_V,
+};
+
+// Macros for Cmd+C and Cmd+V on macOS
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case CMD_C:
+            if (record->event.pressed) {
+                register_mods(MOD_BIT(KC_LGUI));
+                register_code(KC_C);
+            } else {
+                unregister_code(KC_C);
+                unregister_mods(MOD_BIT(KC_LGUI));
+            }
+            return false;
+        case CMD_V:
+            if (record->event.pressed) {
+                register_mods(MOD_BIT(KC_LGUI));
+                register_code(KC_V);
+            } else {
+                unregister_code(KC_V);
+                unregister_mods(MOD_BIT(KC_LGUI));
+            }
+            return false;
+    }
+    return true;
+}
+
+// clang-format off
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    [MAC_BASE] = LAYOUT_61_ansi(
+        KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,   KC_EQL,  KC_BSLS,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,   KC_RBRC, KC_BSPC,
+        NAV_ESC,  HM_A,     HM_S,     HM_D,     HM_F,     HG_G,     HG_H,     HM_J,     HM_K,     HM_L,     HM_SCLN,  KC_QUOT,            KC_ENT,
+        KC_LSFT,            KC_Z,     KC_X,     KC_C,     NUM_V,    KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,
+        KC_LCTL,  KC_LOPTN, KC_LCMMD,                               SYM_SPC,                                KC_RCMMD,MO(MAC_FN),MO(L_FN1),KC_RCTL),
+
+    [WIN_BASE] = LAYOUT_61_ansi(
+        KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,
+        KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_ENT,
+        KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,
+        KC_LCTL,  KC_LWIN,  KC_LALT,                                SYM_SPC,                                KC_RALT, MO(WIN_FN),MO(L_FN1),KC_RCTL),
+
+    [MAC_FN] = LAYOUT_61_ansi(
+        KC_GRV,   KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  BL_DOWN,  BL_UP,    KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,
+        _______,  BT_HST1,  BT_HST2,  BT_HST3,  _______,  _______,  _______,  _______,  _______,  _______,  KC_INS,   KC_PGUP,  KC_HOME,  _______,
+        BL_TOGG,  BL_STEP,  BL_UP,    _______,  _______,  _______,  _______,  _______,  KC_UP,    KC_SNAP,  KC_PGDN,  KC_END,             _______,
+        _______,            _______,  BL_DOWN,  _______,  _______,  _______,  NK_TOGG,  KC_LEFT,  KC_DOWN,  KC_RIGHT, KC_DEL,             _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______),
+
+    [WIN_FN] = LAYOUT_61_ansi(
+        KC_GRV,   KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  BL_DOWN,  BL_UP,    KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,
+        _______,  BT_HST1,  BT_HST2,  BT_HST3,  _______,  _______,  _______,  _______,  KC_APP,   KC_SCRL,  KC_INS,   KC_PGUP,  KC_HOME,  _______,
+        BL_TOGG,  BL_STEP,  BL_UP,    _______,  _______,  _______,  _______,  _______,  KC_UP,    KC_PSCR,  KC_PGDN,  KC_END,             _______,
+        _______,            _______,  BL_DOWN,  _______,  _______,  _______,  NK_TOGG,  KC_LEFT,  KC_DOWN,  KC_RIGHT, KC_DEL,             _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______),
+
+    [L_FN1] = LAYOUT_61_ansi(
+        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_AMPR,  KC_ASTR,  KC_UNDS,  KC_PLUS,  KC_BSLS,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_LBRC,  KC_LPRN,  KC_RPRN,  KC_MINS,  KC_COLN,            KC_DQUO,
+        _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______),
+
+
+    [SYM] = LAYOUT_61_ansi(
+        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,
+        _______,  KC_EXLM,  KC_AT,    KC_DLR,   KC_HASH,  _______,  _______,  KC_AMPR,  KC_ASTR,  KC_UNDS,  KC_PLUS,  KC_BSLS,  _______,  _______,
+        _______,  KC_CIRC,  KC_GRV,   KC_TILD,  KC_PERC,  _______,  KC_LBRC,  KC_LPRN,  KC_RPRN,  KC_MINS,  KC_COLN,  KC_DQUO,            _______,
+        _______,            KC_0,     _______,  CMD_C,      CMD_V,  _______,  KC_RBRC,  KC_LCBR,  KC_RCBR,  _______,  KC_EQL,             _______,
+        _______,  _______,  _______,                                _______,                                KC_PIPE,  _______,  _______,  _______),
+
+
+    [NAV] = LAYOUT_61_ansi(
+        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_HOME,  KC_PGDN,  KC_PGUP,  KC_END,   _______,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  _______,  _______,            _______,
+        _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______),
+
+
+    [NUM] = LAYOUT_61_ansi(
+        _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  KC_MINS,  KC_7,      KC_8,    KC_9,     _______,  _______,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  KC_PLUS,  KC_4,      KC_5,    KC_6,     KC_DOT,   _______,            _______,
+        _______,            _______,  _______,  _______,  _______,  KC_ASTR,  KC_1,      KC_2,    KC_3,     _______,  _______,            _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______),
+};
