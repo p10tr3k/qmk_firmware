@@ -47,15 +47,25 @@ enum layers {
 #define HG_G MT(MOD_HYPR, KC_G)
 #define HG_H MT(MOD_HYPR, KC_H)
 
+// Tune this window (ms) for what you consider "two quick presses"
+#ifndef BSPC_OPTW_TERM
+#define BSPC_OPTW_TERM 200
+#endif
 
 // Transparent helper
 #define _______ KC_TRNS
 #define I______I /* one*/
 // Custom keycodes for Cmd+C / Cmd+V
 enum custom_keycodes {
-    CMD_C = SAFE_RANGE,
+    CMD_C = NEW_SAFE_RANGE,
     CMD_V,
+    BSPC_OPTW, // Backspace, but double-press => Option+Backspace on the second press
 };
+
+
+static uint16_t last_bspc_time = 0;
+static bool bspc_is_registered = false;
+
 
 // Macros for Cmd+C and Cmd+V on macOS
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -78,6 +88,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_mods(MOD_BIT(KC_LGUI));
             }
             return false;
+        case BSPC_OPTW:
+            if (record->event.pressed) {
+                uint16_t elapsed = timer_elapsed(last_bspc_time);
+
+                if (elapsed < BSPC_OPTW_TERM) {
+                    // Second quick press: send Option+Backspace immediately as a tap
+                    tap_code16(LALT(KC_BSPC));
+                    bspc_is_registered = false;
+                } else {
+                    // First press: behave like a real held Backspace (supports key repeat)
+                    register_code(KC_BSPC);
+                    bspc_is_registered = true;
+                }
+
+                last_bspc_time = timer_read();
+            } else {
+                if (bspc_is_registered) {
+                    unregister_code(KC_BSPC);
+                    bspc_is_registered = false;
+                }
+            }
+            return false;
     }
     return true;
 }
@@ -92,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      // 0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
         MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
-        MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
+        MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    BSPC_OPTW,  KC_PGDN,
         MC_3,       NAV_ESC,    HM_A,       HM_S,       HM_D,       HM_F,       HG_G,       I______I    I______I    HG_H,       HM_J,       HM_K,       HM_L,       HM_SCLN,    KC_QUOT,    I______I    KC_ENT,     KC_HOME,
         MC_4,       KC_LSFT,    KC_Z,       KC_X,       KC_C,       NUM_V,      KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
         MC_5,       KC_LCTL,    KC_LOPTN,   KC_LCMMD,   SYM_SPC,    I______I    MO(MAC_FN), I______I    SYM_SPC,    I______I    I______I    KC_RCMMD,   KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
@@ -152,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    KC_HOME,    KC_PGDN,    KC_PGUP,    KC_END,     _______,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_UP,      KC_RGHT,    _______,    _______,    I______I    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,    I______I
-        _______,    _______,    _______,    _______,    _______,    I______I    _______,    I______I    _______,    I______I    I______I    _______,    _______,    I______I    I______I    _______,    _______,    _______),
+        _______,    _______,    _______,    _______,  LCTL(KC_SPC), I______I    _______,    I______I    _______,    I______I    I______I    _______,    _______,    I______I    I______I    _______,    _______,    _______),
 
     // ─────────────────────────────
     // NUM – warstwa numeryczna (V)
