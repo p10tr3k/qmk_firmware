@@ -42,7 +42,8 @@ enum layers {
 
 #define SYM_SPC LT(SYM, KC_SPC)
 #define NAV_ESC LT(NAV, KC_ESC)
-#define NUM_V   LT(NUM, KC_V)
+#define NUM_TAB   LT(NUM, KC_TAB)
+#define NUM_V     LT(NUM, KC_V)
 
 #define HG_G MT(MOD_HYPR, KC_G)
 #define HG_H MT(MOD_HYPR, KC_H)
@@ -124,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      // 0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
         MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
-        MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    BSPC_OPTW,  KC_PGDN,
+        MC_2,       NUM_TAB,    KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    BSPC_OPTW,  KC_PGDN,
         MC_3,       NAV_ESC,    HM_A,       HM_S,       HM_D,       HM_F,       HG_G,       I______I    I______I    HG_H,       HM_J,       HM_K,       HM_L,       HM_SCLN,    KC_QUOT,    I______I    KC_ENT,     KC_HOME,
         MC_4,       KC_LSFT,    KC_Z,       KC_X,       KC_C,       NUM_V,      KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
         MC_5,       KC_LCTL,    KC_LOPTN,   KC_LCMMD,   SYM_SPC,    I______I    MO(MAC_FN), I______I    SYM_SPC,    I______I    I______I    KC_RCMMD,   KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
@@ -148,9 +149,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         KC_MUTE,    KC_ESC,     KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      I______I    I______I    KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,     KC_INS,     KC_DEL,
         MC_1,       KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
-        MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
+        MC_2,       NUM_TAB,    KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    KC_BSPC,    KC_PGDN,
         MC_3,       KC_CAPS,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,       I______I    I______I    KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_QUOT,    I______I    KC_ENT,     KC_HOME,
-        MC_4,       KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
+        MC_4,       KC_LSFT,    KC_Z,       KC_X,       KC_C,       NUM_V,      KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
         MC_5,       KC_LCTL,    KC_LWIN,    KC_LALT,    KC_SPC,     I______I    MO(WIN_FN), I______I    KC_SPC,     I______I    I______I    KC_RALT,    KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
 
     [WIN_FN] = LAYOUT_90_ansi(
