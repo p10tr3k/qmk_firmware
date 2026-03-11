@@ -59,10 +59,10 @@
 #endif
 
 #define TAPPING_TERM 200
-#define PERMISSIVE_HOLD
-#define QUICK_TAP_TERM 80
+// #define PERMISSIVE_HOLD  // przy TAPPING_TERM<=200ms powoduje błędne aktywacje modyfikatorów
+#define QUICK_TAP_TERM 0  // 0 = wyłącza auto-repeat przy home row mods (zapobiega duplikatom)
 // #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 
 //#define HOLD_ON_OTHER_KEY_PRESS
-#define DEBOUNCE 30
+#define DEBOUNCE 15
