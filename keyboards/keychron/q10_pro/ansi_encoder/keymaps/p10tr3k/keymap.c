@@ -23,6 +23,7 @@ enum layers {
     WIN_BASE,
     WIN_FN,
     SYM,
+    SYM2,
     NAV,
     NUM,
 };
@@ -63,11 +64,13 @@ enum custom_keycodes {
     CMD_C = NEW_SAFE_RANGE,
     CMD_V,
     BSPC_OPTW, // Backspace, but double-press => Option+Backspace on the second press
+    SMART_LSFT, // Left Shift that auto-activates SYM2 when SYM is on
 };
 
 
 static uint16_t last_bspc_time = 0;
 static bool bspc_is_registered = false;
+static bool smart_lsft_held = false;
 
 
 // Macros for Cmd+C and Cmd+V on macOS
@@ -113,8 +116,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return false;
+        case SMART_LSFT:
+            smart_lsft_held = record->event.pressed;
+            if (record->event.pressed) {
+                if (layer_state_is(SYM)) {
+                    // SYM already active → go straight to SYM2
+                    layer_on(SYM2);
+                } else {
+                    register_mods(MOD_BIT(KC_LSFT));
+                }
+            } else {
+                layer_off(SYM2);
+                unregister_mods(MOD_BIT(KC_LSFT));
+            }
+            return false;
     }
     return true;
+}
+
+// Activate SYM2 when SYM turns on while SMART_LSFT is already held
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (smart_lsft_held) {
+        if (layer_state_cmp(state, SYM)) {
+            // SYM just activated while Left Shift was held → switch to SYM2
+            unregister_mods(MOD_BIT(KC_LSFT));
+            state |= ((layer_state_t)1 << SYM2);
+        } else {
+            // SYM deactivated, drop SYM2 and restore normal Shift
+            state &= ~((layer_state_t)1 << SYM2);
+            register_mods(MOD_BIT(KC_LSFT));
+        }
+    }
+    return state;
 }
 
 // clang-format off
@@ -129,7 +162,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F13,     KC_GRV,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_6,       I______I    I______I    KC_7,       KC_8,       KC_9,       KC_0,       KC_MINS,    KC_EQL,     KC_BSLS,    KC_PGUP,
         MC_2,       KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       I______I    I______I    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_LBRC,    KC_RBRC,    BSPC_OPTW,  KC_PGDN,
         MC_3,       NAV_ESC,    HM_A,       HM_S,       HM_D,       HM_F,       HG_G,       I______I    I______I    HG_H,       HM_J,       HM_K,       HM_L,       HM_SCLN,    KC_QUOT,    I______I    KC_ENT,     KC_HOME,
-        MC_4,       KC_LSFT,    NUM_Z,      KC_X,       KC_C,       NUM_V,      KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
+        MC_4,       SMART_LSFT, NUM_Z,      KC_X,       KC_C,       NUM_V,      KC_B,       I______I    KC_B,       KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    I______I    KC_RSFT,    KC_UP,      I______I
         MC_5,       KC_LCTL,    KC_LOPTN,   KC_LCMMD,   SYM_SPC,    I______I    MO(MAC_FN), I______I    SYM_SPC,    I______I    I______I    KC_ROPTN,   KC_RCTL,    I______I    I______I    KC_LEFT,    KC_DOWN,    KC_RGHT),
 
     // ─────────────────────────────
@@ -172,10 +205,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
         _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
-        _______,    _______,    KC_EXLM,    KC_AT,      KC_DLR,     KC_HASH,     KC_F20,    I______I    I______I    _______,    KC_LBRC,    KC_RBRC,    KC_UNDS,    KC_PLUS,    KC_BSLS,    _______,    _______,    _______,
-        _______,    _______,    KC_CIRC,    KC_GRV,     KC_TILD,    KC_PERC,    _______,    I______I    I______I    KC_ASTR,    KC_LCBR,    KC_RCBR,    KC_MINS,    KC_COLN,    KC_DQUO,    I______I    _______,    _______,
-        _______,    _______,    KC_0,       _______,    CMD_C,      CMD_V,      _______,    I______I    _______,    KC_AMPR,    KC_LPRN,    KC_RPRN,    _______,    KC_EQL,     I______I    _______,    _______,    I______I
+        _______,    _______,    KC_EXLM,    KC_AT,      KC_DLR,     KC_HASH,     KC_F20,    I______I    I______I    _______,    KC_LCBR,    KC_RCBR,    KC_UNDS,    KC_PLUS,    KC_BSLS,    _______,    _______,    _______,
+        _______,    _______,    KC_CIRC,    KC_GRV,     KC_TILD,    KC_PERC,    _______,    I______I    I______I    KC_ASTR,    KC_LPRN,    KC_RPRN,    KC_MINS,    KC_COLN,    KC_DQUO,    I______I    _______,    _______,
+        _______,    MO(SYM2),   KC_0,       _______,    CMD_C,      CMD_V,      _______,    I______I    _______,    KC_AMPR,    _______,    _______,    _______,    KC_EQL,     I______I    _______,    _______,    I______I
         _______,    _______,    _______,    _______,    _______,    I______I    _______,    I______I    KC_PIPE,    I______I    I______I    _______,    _______,    I______I    I______I    _______,    _______,    _______),
+
+    // ─────────────────────────────
+    // SYM2 – warstwa symboliczna 2 (SYM + Left Shift)
+    // ─────────────────────────────
+    [SYM2] = LAYOUT_90_ansi(
+    //  0           1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17
+        _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    KC_0,       _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    KC_LBRC,    KC_RBRC,    _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    I______I    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,
+        _______,    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,    _______,    _______,    _______,    _______,    I______I    _______,    _______,    I______I
+        _______,    _______,    _______,    _______,    _______,    I______I    _______,    I______I    _______,    I______I    I______I    _______,    _______,    I______I    I______I    _______,    _______,    _______),
+
 
     // ─────────────────────────────
     // NAV – warstwa nawigacyjna (CapsFN)
@@ -209,6 +255,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [WIN_BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [WIN_FN]   = { ENCODER_CCW_CW(RGB_VAD, RGB_VAI) },
     [SYM]      = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [SYM2]     = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [NAV]      = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [NUM]      = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
 };
