@@ -97,16 +97,11 @@ bool debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_rows, bool 
 void debounce_init(uint8_t num_rows) {
     debounce_type = 0;
 
-    // debounce_set(DEBOUNCE_SYM_EAGER_PER_KEY, DEBOUNCE);
     if (!eeconfig_is_enabled()) {
         eeconfig_init();
     }
-    uint8_t type = eeprom_read_byte(OFFSET_DEBOUNCE);
-    uint8_t time = eeprom_read_byte(OFFSET_DEBOUNCE + 1);
 
-    if (type >= DEBOUNCE_MAX) type = DEFAULT_DEBOUNCE_TYPE;
-
-    debounce_set(type, time, debounce_type == type);
+    debounce_set(DEFAULT_DEBOUNCE_TYPE, DEBOUNCE, true);
 }
 
 void debounce_free(void) {
@@ -197,14 +192,7 @@ void debounce_rx(uint8_t *data, uint8_t length) {
             break;
 
         case DEBOUNCE_SET: {
-            uint8_t type = data[2];
-            uint8_t time = data[3];
-            if (type < DEBOUNCE_MAX) {
-                data[2] = 0;
-                debounce_set(type, time, false);
-                debounce_save();
-            } else
-                data[2] = 1;
+            data[2] = 1;
         } break;
 
         default:
